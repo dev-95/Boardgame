@@ -1,53 +1,121 @@
-# BoardgameListingWebApp
+# 🎲 BoardgameListingWebApp: End-to-End DevOps Implementation
 
-## Description
+> A Java Full-Stack Web Application deployed through a complete, automated DevOps pipeline — from code push to live Kubernetes cluster on Azure, with zero manual intervention.
 
-**Board Game Database Full-Stack Web Application.**
-This web application displays lists of board games and their reviews. While anyone can view the board game lists and reviews, they are required to log in to add/ edit the board games and their reviews. The 'users' have the authority to add board games to the list and add reviews, and the 'managers' have the authority to edit/ delete the reviews on top of the authorities of users.. 
+---
 
-## Technologies
+## 🚀 Live Demo
 
-- Java.
-- Spring Boott
-- Amazon Web Services(AWS) EC2
-- Thymeleaf
-- Thymeleaf Fragments
-- HTML5
-- CSS
-- JavaScript
-- Spring MVC
-- JDBC
-- H2 Database Engine (In-memory)
-- JUnit test framework
-- Spring Security
-- Twitter Bootstrap
-- Maven
+> **Note:** Hosted on an Azure VM via Minikube NodePort.
 
-## Features
+---
 
-- Full-Stack Application
-- UI components created with Thymeleaf and styled with Twitter Bootstrap
-- Authentication and authorization using Spring Security
-  - Authentication by allowing the users to authenticate with a username and password
-  - Authorization by granting different permissions based on the roles (non-members, users, and managers)
-- Different roles (non-members, users, and managers) with varying levels of permissions
-  - Non-members only can see the boardgame lists and reviews
-  - Users can add board games and write reviews
-  - Managers can edit and delete the reviews
-- Deployed the application on AWS EC2
-- JUnit test framework for unit testing
-- Spring MVC best practices to segregate views, controllers, and database packages
-- JDBC for database connectivity and interaction
-- CRUD (Create, Read, Update, Delete) operations for managing data in the database
-- Schema.sql file to customize the schema and input initial data
-- Thymeleaf Fragments to reduce redundancy of repeating HTML elements (head, footer, navigation)
+## 📖 Project Overview
 
-## How to Run
+This project takes an existing Java Spring Boot board game management application and implements a **production-grade DevOps lifecycle** around it — containerizing the app, automating builds via CI/CD, and orchestrating deployments on Kubernetes running on Microsoft Azure.
 
-1. Clone the repository
-2. Open the project in your IDE of choice
-3. Run the application
-4. To use initial user data, use the following credentials.
-  - username: bugs    |     password: bunny (user role)
-  - username: daffy   |     password: duck  (manager role)
-5. You can also sign-up as a new user and customize your role to play with the application! 😊
+The application supports role-based access control, allowing different user types to view, add, edit, and delete board game listings and reviews.
+
+### The Goal
+Demonstrate industry-standard DevOps automation: a developer pushes code → GitHub Actions builds and tests → Docker image is versioned and pushed → Kubernetes automatically updates the live site. No manual steps.
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| Application | Java 11, Spring Boot, Thymeleaf, Spring Security, H2 Database |
+| Build Tool | Maven |
+| Containerization | Docker (multi-stage build) |
+| Container Registry | Docker Hub (`devesh0905/boardgame:v1`) |
+| CI/CD | GitHub Actions |
+| Orchestration | Kubernetes (Minikube on Azure VM) |
+| Cloud Provider | Microsoft Azure |
+
+---
+
+## 🏗️ DevOps Architecture & Workflow
+
+```
+Code Push → GitHub Actions → Maven Build & Test → Docker Image → Docker Hub → Kubernetes → Live App
+```
+
+| Stage | Description |
+|-------|-------------|
+| **Source Control** | Code versioned and managed in GitHub |
+| **CI — Build & Test** | GitHub Actions triggers on every push to `main`, runs Maven tests and builds the JAR |
+| **Containerization** | Multi-stage Dockerfile packages the Spring Boot JAR into a lightweight production image |
+| **Registry** | Versioned images pushed to Docker Hub automatically |
+| **Orchestration** | Kubernetes manages 2 replicas for high availability and self-healing |
+| **Cloud** | Minikube cluster running on an Azure VM, exposed via NodePort with Azure NSG rules |
+
+---
+
+## 🔐 Role-Based Access Control
+
+| Role | Credentials | Permissions |
+|------|-------------|-------------|
+| Non-Member | *(no login required)* | View board game lists and reviews |
+| User | `bugs` / `bunny` | Add board games and write reviews |
+| Manager | `daffy` / `duck` | Edit and delete reviews |
+
+---
+
+## 🚦 How to Run
+
+### Option 1 — Run Locally
+
+```bash
+mvn clean package
+java -jar target/database_service_project-0.0.7.jar
+```
+
+Then open `http://localhost:8080` in your browser.
+
+### Option 2 — Deploy to Kubernetes
+
+Ensure your cluster is running, then apply the manifests:
+
+```bash
+kubectl apply -f deployment-service.yaml
+```
+
+Verify pods are running:
+
+```bash
+kubectl get pods
+kubectl get svc
+```
+
+---
+
+## 📈 Key DevOps Skills Demonstrated
+
+- **CI/CD Automation** — GitHub Actions pipeline reduces deployment from manual steps to fully automated on every push
+- **Containerization** — Multi-stage Docker build produces a minimal, production-ready image
+- **Kubernetes Orchestration** — 2-replica deployment with self-healing and rolling update support
+- **Cloud Networking** — Azure NSG rules configured to allow external traffic to the Kubernetes NodePort
+- **Infrastructure as Code** — Kubernetes resources defined and managed entirely via YAML manifests
+
+---
+
+## 📁 Project Structure
+
+```
+.
+├── src/                          # Java Spring Boot application source
+├── Dockerfile                    # Multi-stage Docker build
+├── deployment-service.yaml       # Kubernetes Deployment + Service manifest
+├── .github/workflows/            # GitHub Actions CI/CD pipeline
+├── pom.xml                       # Maven build configuration
+└── .gitignore                    # Excludes build artifacts and secrets
+```
+
+---
+
+## 👤 Author
+
+**Devesh Chowdary Chalasani**  
+Cloud & DevOps Engineer  
+[LinkedIn](https://linkedin.com/in/devesh-chalasani) · [Docker Hub](https://hub.docker.com/u/devesh0905)
